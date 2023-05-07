@@ -1,0 +1,19 @@
+The first number is the senior version (major), it changes when the program changes dramatically
+
+The second number is the minor version (minor), changes with significant changes in functionality
+
+The third number (or letter) is the development stage
+
+    - Alpha version - the testing stage of the application, the number 0 or the symbol a
+
+    - Beta version - the stage of public testing of the application, the number 1 or the symbol b
+
+    - RC (Release candidate) - Release candidate - stage-candidate to become a stable version, number 2 or rc characters
+
+    - RTM (Release To Manufacturing) - release - stable version of the application, number 3 or rtm characters
+
+    - GA (General availability) - public release
+
+    - It may be missing, and then the next number is put in its place.
+
+The fourth number is small changes (micro, maintenance), changes with any, even minor, editing of the program
