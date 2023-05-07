@@ -1,6 +1,6 @@
 import sqlite3
 import asyncio
-
+from Random_carts import *
 
 connect_bd = sqlite3.connect(r'./src/Database/Bunker_play.db')
 
@@ -80,4 +80,64 @@ class create_bd():
         await create_bd.create_bd_Player_Cards_check()
         await create_bd.create_bd_Bunker_Cards()
 
-asyncio.run(create_bd.create_all())
+class test_bd():
+    
+    def test_bd_Players(user_id, id_player):
+        cur = connect_bd.cursor()
+        cur.execute(f"""INSERT INTO 
+                            Players(
+                            user_id,
+                            id_player)
+                            VALUES('{user_id}','{id_player}')
+                                """)
+        connect_bd.commit()
+        cur.close()
+
+    async def test_bd_Player_Cards(id_player):
+        cur = connect_bd.cursor()
+        cur.execute(f"""SELECT * FROM Players where id_player = {id_player}""")
+        bd = tuple(list(set(cur.fetchall())))
+        Results_random = bunker_karti.stol_play()
+
+        cur.execute(f"""INSERT INTO Player_Cards(
+                                user_id , Profession , Biology,
+                                Health , Hobby , Luggage,
+                                Evidense , Special_conditions)
+                                VALUES('{bd[0][0]}','{Results_random[0]}','{Results_random[1]}',
+                                '{Results_random[2]}','{Results_random[3]}','{Results_random[4]}',
+                                '{Results_random[5]}','{Results_random[6]}');
+                             """)
+        connect_bd.commit()
+        cur.close()
+
+
+    async def test_bd_Player_Cards_check(id_player):
+        cur = connect_bd.cursor()
+        cur.execute(f"""SELECT * FROM Players where id_player = {id_player}""")
+        bd = tuple(list(set(cur.fetchall())))
+        Results_random = (0,0,0,0,0,0,0)
+
+        cur.execute(f"""INSERT INTO Player_Cards(
+                                user_id , Profession , Biology,
+                                Health , Hobby , Luggage,
+                                Evidense , Special_conditions)
+                                VALUES('{bd[0][0]}','{Results_random[0]}','{Results_random[1]}',
+                                '{Results_random[2]}','{Results_random[3]}','{Results_random[4]}',
+                                '{Results_random[5]}','{Results_random[6]}');
+                             """)
+        connect_bd.commit()
+        cur.close()
+
+
+    async def test_bd_Bunker_Cards():
+        cur = connect_bd.cursor()
+        cur.execute("""
+                                """)
+        connect_bd.commit()
+        cur.close()
+
+
+    async def test_bd_all():
+        pass
+
+asyncio.run(test_bd.test_bd_Player_Cards(id_player=12))
