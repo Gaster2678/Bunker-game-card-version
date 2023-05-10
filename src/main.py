@@ -1,10 +1,8 @@
 from module.menu import one_menu
+import asyncio
 
-def main():
-    print("_1_ ")
-    #Генерация комнаты
-    
-    one_menu.menu()
+async def main():
+    await one_menu.menu()
 
 
-main()
+asyncio.run(main())

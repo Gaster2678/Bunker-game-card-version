@@ -193,7 +193,7 @@ class Jobs_bd():
         Results_random = bunker_karti.stol_play()
         Null_chec = (0,0,0,0,0,0,0)
         result = Sobitia.Generating_results_for_the_database()
-
+        return_id = (last_value_player,last_value_room)
         cur.execute(f"""INSERT INTO 
                             Players(
                                 user_id,
@@ -277,18 +277,21 @@ class Jobs_bd():
                                     '{result[8]}');
                                 """)
         connect_bd.commit()
+
         cur.close()      
 
         await dev_jobs_bd.next_value_player()
         await dev_jobs_bd.next_value_room()
-           
+        
+        return return_id
+        
     async def add_play(id_send,id_discord_user): 
         cur = connect_bd.cursor()
         last_value_player = await dev_jobs_bd.last_value_player()
         Results_random = bunker_karti.stol_play()
         Null_chec = (0,0,0,0,0,0,0)
         result = Sobitia.Generating_results_for_the_database()
-
+        
         cur.execute(f"""SELECT play_id 
                         FROM Players 
                         where id_send = {id_send}""")
@@ -356,8 +359,10 @@ class Jobs_bd():
         connect_bd.commit()
 
         cur.close()      
-
+        return_id = (last_value_player, id_room)
         await dev_jobs_bd.next_value_player()
+
+        return return_id
         
 class dev_jobs_bd():
 
@@ -402,4 +407,4 @@ class dev_jobs_bd():
 #asyncio.run(Jobs_bd.add_play_and_room(id_send=3, id_discord_user=1000001))
 #asyncio.run(create_bd.create_all())
 #asyncio.run(test_bd.test_bd_Last_value(last_play_room_id= 10, last_user_id=10))
-asyncio.run(Jobs_bd.add_play(id_send= 2,id_discord_user=1400212))
+#asyncio.run(Jobs_bd.add_play(id_send= 2,id_discord_user=1400212))
