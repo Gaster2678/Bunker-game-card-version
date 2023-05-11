@@ -96,7 +96,9 @@ class starting_the_game():
         print("[№ player].[ont id]|[name player] ")
         for b in list_of_players:
             print(f"{c + 1}. {list_of_players[c][0]}|<@{list_of_players[c][1]}>")
-            c = c + 1   
+            c = c + 1
+
+        #сюда   
 
             
 #asyncio.run(checks.check_quantity_players(id_send=2, id_discord_auther_room= 1))
