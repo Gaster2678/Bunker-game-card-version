@@ -34,7 +34,7 @@ class checks():
             y = y + 1
 
         if ((y >= 4 ) and (y <= 16)):
-            print("ок")# сюда<-----
+            await starting_the_game.Confirmation()
         elif y < 4:
             await starting_the_game.few_players()
             await one_menu.menu_return()
@@ -96,8 +96,7 @@ class starting_the_game():
         print("[№ player].[ont id]|[name player] ")
         for b in list_of_players:
             print(f"{c + 1}. {list_of_players[c][0]}|<@{list_of_players[c][1]}>")
-            c = c + 1
-            
+            c = c + 1   
 
             
 #asyncio.run(checks.check_quantity_players(id_send=2, id_discord_auther_room= 1))
