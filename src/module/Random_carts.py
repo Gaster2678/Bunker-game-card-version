@@ -1,5 +1,7 @@
 import random
+
 from bunker_card import *
+
 class bunker_karti():
 
     def Profession_random():
