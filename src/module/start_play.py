@@ -91,11 +91,11 @@ class starting_the_game():
         print("A lot of players")
 
     async def The_second_stage_of_the_start(list_of_players):
-        a = len(list_of_players)
-        c = 1
+        c = 0
         print("List of players")
+        print("[№ player].[ont id]|[name player] ")
         for b in list_of_players:
-            print(f"{c}.@{b[1]}")
+            print(f"{c + 1}. {list_of_players[c][0]}|<@{list_of_players[c][1]}>")
             c = c + 1
             
 
