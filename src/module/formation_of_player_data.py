@@ -22,6 +22,7 @@ class database_managment_table_player_out_checks():
 
         data_checks = cur.fetchall()
         connect_bd.commit()
+        cur.close()
         return data_checks
     
     async def request_2(data_player):
@@ -36,6 +37,7 @@ class database_managment_table_player_out_checks():
 
         data_card = cur.fetchall()
         connect_bd.commit()
+        cur.close()
         return data_card
 
     async def checks_if(user_id, nick):
