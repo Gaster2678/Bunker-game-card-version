@@ -5,15 +5,14 @@ connect_bd = sqlite3.connect(r'./src/Database/Bunker_play.db')
    
 class data_generation():
 
-    async def sd():
-        pass
+    async def sd(user_id):
+        await database_managment_table_player_out_checks.checks_if(user_id=user_id)
 
 class database_managment_table_player_out_checks():
     
     async def request(data_player):
         cur = connect_bd.cursor()
-        user_id = data_player[0]
-
+        user_id = data_player
 
         cur.execute(f"""
             SELECT *
@@ -22,36 +21,102 @@ class database_managment_table_player_out_checks():
         """)
 
         data_checks = cur.fetchall()
-
         connect_bd.commit()
-
         return data_checks
     
-    async def checks_if():
-        
-        data = await database_managment_table_player_out_checks.request()
+    async def request_2(data_player):
+        cur = connect_bd.cursor()
+        user_id = data_player
 
+        cur.execute(f"""
+            SELECT *
+            FROM Player_Cards
+            where user_id = {user_id}
+        """)
+
+        data_card = cur.fetchall()
+        connect_bd.commit()
+        return data_card
+
+    async def checks_if(user_id):
+        y = 0
+        data = await database_managment_table_player_out_checks.request(data_player=user_id)
+        player_card = await database_managment_table_player_out_checks.request_2(data_player=user_id)
         data_return = ["1","2","3","4","5","6","7"]
+        await database_managment_table_player_out_checks.chek_proff(data=data, data_return=data_return,data_card=player_card )
+        print(f"{user_id}. {data_return[0]}|{data_return[1]}|{data_return[2]}|{data_return[3]}|{data_return[4]}|{data_return[5]}|{data_return[6]}|")
 
-        await database_managment_table_player_out_checks.chek_proff(data=data, data_return= data_return)
-        
 
-    async def chek_proff(data, data_return):
-        if data == 0:
-            database_managment_table_player_out_checks.chek_bio()
+    async def chek_proff(data, data_return, data_card):
+        if data[0][1] == 0:
+            data_return[0] = "???"
+            await database_managment_table_player_out_checks.chek_bio(data=data, data_return=data_return,data_card=data_card )
         else:
-            data_return[0].replase("1", f"")
-    async def chek_bio(data, data_return):
-        pass
+            data_return[0] = data_card[0][1]
+            await database_managment_table_player_out_checks.chek_bio(data=data, data_return=data_return,data_card=data_card )
 
-    async def chek_heal(data, data_return):
-        pass
+    async def chek_bio(data, data_return, data_card):
+        if data[0][2] == 0:
+            data_return[1] = "???"
+            await database_managment_table_player_out_checks.chek_heal(data=data, data_return=data_return,data_card=data_card )
+        else:
+            data_return[1] = data_card[0][2]
+            await database_managment_table_player_out_checks.chek_heal(data=data, data_return=data_return,data_card=data_card )
 
-    async def chek_lug(data, data_return):
-        pass
+    async def chek_heal(data, data_return, data_card):
+        if data[0][3] == 0:
+            data_return[2] = "???"
+            await database_managment_table_player_out_checks.chek_hobby(data=data, data_return=data_return,data_card=data_card )
+        else:
+            data_return[2] = data_card[0][3]
+            await database_managment_table_player_out_checks.chek_hobby(data=data, data_return=data_return,data_card=data_card )
 
-    async def chek_evid(data, data_return):
-        pass
+    async def chek_hobby(data, data_return, data_card):
+        if data[0][4] == 0:
+            data_return[3] = "???"
+            await database_managment_table_player_out_checks.chek_lug(data=data, data_return=data_return,data_card=data_card )
+        else:
+            data_return[3] = data_card[0][4]
+            await database_managment_table_player_out_checks.chek_lug(data=data, data_return=data_return,data_card=data_card )
 
-    async def chek_special(data, data_return):
-        pass
+
+    async def chek_lug(data, data_return, data_card):
+        if data[0][5] == 0:
+            data_return[4] = "???"
+            await database_managment_table_player_out_checks.chek_evid(data=data, data_return=data_return,data_card=data_card )
+        else:
+            data_return[4] = data_card[0][5]
+            await database_managment_table_player_out_checks.chek_evid(data=data, data_return=data_return,data_card=data_card )
+
+    async def chek_evid(data, data_return, data_card):
+        if data[0][6] == 0:
+            data_return[5] = "???"
+            await database_managment_table_player_out_checks.chek_special(data=data, data_return=data_return,data_card=data_card )
+        else:
+            data_return[5] = data_card[0][6]
+            await database_managment_table_player_out_checks.chek_special(data=data, data_return=data_return,data_card=data_card )
+
+    async def chek_special(data, data_return, data_card):
+        if data[0][7] == 0:
+            data_return[6] = "???"
+        else:
+            data_return[6] = data_card[0][7]
+
+    async def next_value_player():
+        
+        cur = connect_bd.cursor()
+        cur.execute(f"""UPDATE Player_Cards_check 
+                        SET 
+                        Profession = "1",
+                        Biology = "1",
+                        Health = "1",
+                        Luggage = "1",
+                        Evidense = "1",
+                        Special_conditions = "1",
+                        Hobby = "1"
+                        where user_id = "10" """)
+        connect_bd.commit()
+        cur.close()
+
+#asyncio.run(database_managment_table_player_out_checks.next_value_player())
+asyncio.run(data_generation.sd(10))
