@@ -60,6 +60,7 @@ class raund_1():
             print(f"Ход игрока <@{ping_nick}> окончен")
         
         await Character_Card_table.table_player(list_of_players=list_of_player)
+        await raund_2.start(list_of_player=list_of_player)
             
     async def updata_proff(user_id):
         cur = connect_bd.cursor()
@@ -73,7 +74,43 @@ class raund_1():
         cur.close()
 
 class raund_2():
-    pass
+    async def start(list_of_player):
+        sek = (5,4,3,2,1)
+        print("2-ой раунд начинается через минуту")
+        time.sleep(30)
+        print("2-ой раунд начинается через 30 секунд")
+        await raund_2.secret_player_1(player=list_of_player[0])
+        time.sleep(25)
+        print("Начало через:")
+        for x in sek:
+            print(x)
+            time.sleep(1)
+        print("2 раунд начался")
+
+    async def secret_player_1():
+        print("Ваш ход через 40 секунд \n Надеюсь вы выбрали карту")
+
+    async def secret(list_of_player):
+        pass
+
+    async def all(list_of_player):
+        pass
+
+    async def vibor(check,user_id):
+         if check == 1:
+            pass
+         elif check == 2:
+            pass
+         elif check == 2:
+            pass
+         elif check == 2:
+            pass
+         elif check == 2:
+            pass
+         elif check == 2:
+            pass
+         else:
+            pass
 
 class raund_3():
     pass
@@ -98,5 +135,72 @@ class Character_Card_table():
             
             await data_generation.start(user_id=user_id,nick= ping_nick)
 
+class updata():
 
-asyncio.run(raund_1.start(list_player=list_play))
+    async def updata_bio(user_id):
+        cur = connect_bd.cursor()
+
+        cur.execute(f"""UPDATE Player_Cards_check 
+                        SET Biology = "1"
+                        where user_id = {user_id}
+                        """)
+        
+        connect_bd.commit()
+        cur.close()
+
+    async def updata_heal(user_id):
+        cur = connect_bd.cursor()
+
+        cur.execute(f"""UPDATE Player_Cards_check 
+                        SET Health = "1"
+                        where user_id = {user_id}
+                        """)
+        
+        connect_bd.commit()
+        cur.close()
+
+    async def updata_lug(user_id):
+        cur = connect_bd.cursor()
+
+        cur.execute(f"""UPDATE Player_Cards_check 
+                        SET Luggage = "1"
+                        where user_id = {user_id}
+                        """)
+        
+        connect_bd.commit()
+        cur.close()
+
+    async def updata_evid(user_id):
+        cur = connect_bd.cursor()
+
+        cur.execute(f"""UPDATE Player_Cards_check 
+                        SET Evidense = "1"
+                        where user_id = {user_id}
+                        """)
+        
+        connect_bd.commit()
+        cur.close()
+
+    async def updata_hobby(user_id):
+        cur = connect_bd.cursor()
+
+        cur.execute(f"""UPDATE Player_Cards_check 
+                        SET Hobby = "1"
+                        where user_id = {user_id}
+                        """)
+        
+        connect_bd.commit()
+        cur.close()
+
+    async def updata_special(user_id):
+        cur = connect_bd.cursor()
+
+        cur.execute(f"""UPDATE Player_Cards_check 
+                        SET Special_conditions = "1"
+                        where user_id = {user_id}
+                        """)
+        
+        connect_bd.commit()
+        cur.close()
+
+asyncio.run(raund_2.start())
