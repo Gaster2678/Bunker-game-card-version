@@ -37,9 +37,6 @@ class raund_1():
     async def send_secret_raund():
         print("Ваш ход начнется через 10 секунд [Первой картой открывается профессия]")
 
-    async def time_10_sec_player():
-        pass
-
     async def Whose_move(list_of_player):
         for player in list_of_player:
             user_id = player[0]
@@ -87,7 +84,9 @@ class raund_2():
             time.sleep(1)
         print("2 раунд начался")
 
-    async def secret_player_1():
+    async def secret_player_1(player):
+        user_is = player[0]
+        discord_id = player[1]
         print("Ваш ход через 40 секунд \n Надеюсь вы выбрали карту")
 
     async def secret(list_of_player):
@@ -98,17 +97,17 @@ class raund_2():
 
     async def vibor(check,user_id):
          if check == 1:
-            pass
+            await updata.updata_bio(user_id=user_id)
          elif check == 2:
-            pass
+            await updata.updata_heal(user_id=user_id)
          elif check == 2:
-            pass
+            await updata.updata_lug(user_id=user_id)
          elif check == 2:
-            pass
+            await updata.updata_evid(user_id=user_id)
          elif check == 2:
-            pass
+            await updata.updata_hobby(user_id=user_id)
          elif check == 2:
-            pass
+            await updata.updata_special(user_id=user_id)
          else:
             pass
 
