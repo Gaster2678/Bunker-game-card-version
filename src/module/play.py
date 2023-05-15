@@ -2,6 +2,7 @@ import asyncio
 from formation_of_player_data import data_generation, database_managment_table_player_out_checks
 import time
 import sqlite3
+import random
 
 connect_bd = sqlite3.connect(r'./src/Database/Bunker_play.db')
 list_play = ((23,9),(24,99),(25,999))
@@ -60,6 +61,7 @@ class raund_1():
             print(f"Ход игрока <@{ping_nick}> окончен")
         
         await Character_Card_table.table_player(list_of_players=list_of_player)
+        await raund_2.time_60_sek(list=list_of_player)
             
     async def updata_proff(user_id):
         cur = connect_bd.cursor()
@@ -73,8 +75,38 @@ class raund_1():
         cur.close()
 
 class raund_2():
-    pass
+    
+    async def time_60_sek(list):
+        print("Второй раунд начнется через минуту")
+        time.sleep(30)
+        print("30 cek")
+        print("Типо модуль")#модуль выдачи вариантов карт <--- 
+        time.sleep(25)
+        print("5 cek")
 
+        sec = (5,4,3,2,1)
+
+        for x in sec:
+            print(x)
+            time.sleep(1)
+
+        print("2-ой раунд начинается")
+
+        await raund_2.sec_sek(list=list)
+
+    async def sec_sek(list):
+    
+        for x in list:
+            print(f"Ход игрока <@{x[1]}> начнется через 10 секунд")
+            time.sleep(10)
+            await random.vibor(user_id=x[0], check=0)
+            print(f"Ход игрока <@{x[1]}>")
+            time.sleep(30)
+            print(f"Ход игрока <@{x[1]}> окончен")
+
+        print("none")
+        await Character_Card_table.table_player(list_of_players=list_play)
+    
 class raund_3():
     pass
 
@@ -98,5 +130,62 @@ class Character_Card_table():
             
             await data_generation.start(user_id=user_id,nick= ping_nick)
 
+class random():
 
-asyncio.run(raund_1.start(list_player=list_play))
+
+    async def sql_zapros(user_id):
+        mass_check_one = 0
+        ethalon = 2
+        cur = connect_bd.cursor()
+
+        cur.execute(f"""SELECT *
+                        FROM Player_Cards_check
+                        where user_id = {user_id}
+                        """)
+        
+        list_check_player = cur.fetchall()
+        cur.close()
+
+        for x in list_check_player:
+            if x == 1:
+                mass_check_one = mass_check_one + 1
+            else:
+                pass
+
+        return mass_check_one
+    
+    async def random(user_id):
+        random_return =await random.random(0, await random.sql_zapros(user_id=user_id))
+        await random.vibor(user_id=user_id, check= random_return)
+
+    async def vibor(user_id, check):
+
+        mass_updata = ("Biology","Health","Hobby","Luggage","Evidense","Special_conditions")
+
+        if check == 1:
+            await random.sql_updata(user_id=user_id, updata=mass_updata[0])
+        elif check == 2:
+            await random.sql_updata(user_id=user_id, updata=mass_updata[1])
+        elif check == 3:
+            await random.sql_updata(user_id=user_id, updata=mass_updata[2])
+        elif check == 4:
+            await random.sql_updata(user_id=user_id, updata=mass_updata[3])
+        elif check == 5:
+            await random.sql_updata(user_id=user_id, updata=mass_updata[4])
+        elif check == 6:
+            await random.sql_updata(user_id=user_id, updata=mass_updata[5])
+        else:
+            await random.random(user_id=user_id)
+
+    async def sql_updata(user_id, updata):
+        cur = connect_bd.cursor()
+
+        cur.execute(f"""UPDATE Player_Cards_check 
+                        SET {updata} = "1"
+                        where user_id = {user_id}
+                        """)
+        
+        connect_bd.commit()
+        cur.close()
+
+asyncio.run(raund_2.time_60_sek(list=list_play))
