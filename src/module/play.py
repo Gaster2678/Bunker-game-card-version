@@ -2,9 +2,10 @@ import asyncio
 from formation_of_player_data import data_generation, database_managment_table_player_out_checks
 import time
 import sqlite3
+import random
 
 connect_bd = sqlite3.connect(r'./src/Database/Bunker_play.db')
-list_play = ((23,9),(24,99),(25,999))
+list_play = ((20,9),(21,99),(22,999))
 
 class raund_1():
 
@@ -73,43 +74,61 @@ class raund_1():
 class raund_2():
     async def start(list_of_player):
         sek = (5,4,3,2,1)
+
         print("2-ой раунд начинается через минуту")
+
         time.sleep(30)
+        
         print("2-ой раунд начинается через 30 секунд")
+
         await raund_2.secret_player_1(player=list_of_player[0])
+
         time.sleep(25)
+
         print("Начало через:")
+
         for x in sek:
             print(x)
             time.sleep(1)
+
         print("2 раунд начался")
+        await raund_2.player_hod(list=list_of_player)
+
+    async def player_hod(list):
+        for x in list:
+            print(f"Ход игрока {x[1]} через 10 секунд")
+            time.sleep(10)
+            await raund_2.vibor(check=0, user_id= x[0])
+            print(f"Ход игрока <@{x[1]}>")
+            time.sleep(30)
+            print(f"Ход игрока {x[1]} окончен")
+
+        await Character_Card_table.table_player(list_of_players=list)
+        
 
     async def secret_player_1(player):
         user_is = player[0]
         discord_id = player[1]
-        print("Ваш ход через 40 секунд \n Надеюсь вы выбрали карту")
-
-    async def secret(list_of_player):
-        pass
-
-    async def all(list_of_player):
-        pass
+        print("Ваш ход через 40 секунд\nНадеюсь вы выбрали карту")
 
     async def vibor(check,user_id):
-         if check == 1:
-            await updata.updata_bio(user_id=user_id)
-         elif check == 2:
-            await updata.updata_heal(user_id=user_id)
-         elif check == 2:
-            await updata.updata_lug(user_id=user_id)
-         elif check == 2:
-            await updata.updata_evid(user_id=user_id)
-         elif check == 2:
-            await updata.updata_hobby(user_id=user_id)
-         elif check == 2:
-            await updata.updata_special(user_id=user_id)
-         else:
-            pass
+        
+        mass_edit = ("Biology","Health","Hobby","Luggage","Evidense","Special_conditions")
+
+        if check == 1:
+            await updata.updata_sql(user_id= user_id, updata= mass_edit[0])
+        elif check == 2:
+            await updata.updata_sql(user_id= user_id, updata= mass_edit[1])
+        elif check == 3:
+            await updata.updata_sql(user_id= user_id, updata= mass_edit[2])
+        elif check == 4:
+            await updata.updata_sql(user_id= user_id, updata= mass_edit[3])
+        elif check == 5:
+            await updata.updata_sql(user_id= user_id, updata= mass_edit[4])
+        elif check == 6:
+            await updata.updata_sql(user_id= user_id, updata= mass_edit[5])
+        else:
+            await random_updata.logik(user_id=user_id)
 
 class raund_3():
     pass
@@ -136,70 +155,47 @@ class Character_Card_table():
 
 class updata():
 
-    async def updata_bio(user_id):
+    async def updata_sql(user_id, updata):
         cur = connect_bd.cursor()
 
         cur.execute(f"""UPDATE Player_Cards_check 
-                        SET Biology = "1"
+                        SET {updata} = "1"
                         where user_id = {user_id}
                         """)
         
         connect_bd.commit()
         cur.close()
 
-    async def updata_heal(user_id):
+class random_updata():
+
+    async def check_sql(user_id):
         cur = connect_bd.cursor()
 
-        cur.execute(f"""UPDATE Player_Cards_check 
-                        SET Health = "1"
-                        where user_id = {user_id}
-                        """)
-        
+        cur.execute(f"""
+            SELECT *
+            FROM Player_Cards_check
+            where user_id = {user_id}
+        """)
+
+        data_card = cur.fetchall()
         connect_bd.commit()
         cur.close()
-
-    async def updata_lug(user_id):
-        cur = connect_bd.cursor()
-
-        cur.execute(f"""UPDATE Player_Cards_check 
-                        SET Luggage = "1"
-                        where user_id = {user_id}
-                        """)
+        return data_card
+    
+    async def logik(user_id):
+        mass = await random_updata.check_sql(user_id=user_id)
+        clock = 0
+        for x in mass:
+            for y in x:
+                if y == 0:
+                    clock = clock + 1
+                else:
+                    pass
         
-        connect_bd.commit()
-        cur.close()
+        return_random = random.randint(1,clock)
 
-    async def updata_evid(user_id):
-        cur = connect_bd.cursor()
+        await raund_2.vibor(check=return_random, user_id=user_id)
 
-        cur.execute(f"""UPDATE Player_Cards_check 
-                        SET Evidense = "1"
-                        where user_id = {user_id}
-                        """)
-        
-        connect_bd.commit()
-        cur.close()
 
-    async def updata_hobby(user_id):
-        cur = connect_bd.cursor()
 
-        cur.execute(f"""UPDATE Player_Cards_check 
-                        SET Hobby = "1"
-                        where user_id = {user_id}
-                        """)
-        
-        connect_bd.commit()
-        cur.close()
-
-    async def updata_special(user_id):
-        cur = connect_bd.cursor()
-
-        cur.execute(f"""UPDATE Player_Cards_check 
-                        SET Special_conditions = "1"
-                        where user_id = {user_id}
-                        """)
-        
-        connect_bd.commit()
-        cur.close()
-
-asyncio.run(raund_2.start())
+asyncio.run(raund_1.start(list_player=list_play))
