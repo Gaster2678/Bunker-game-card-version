@@ -4,7 +4,7 @@ import time
 import sqlite3
 
 connect_bd = sqlite3.connect(r'./src/Database/Bunker_play.db')
-list_play = ((23,9),(24,99),(25,999))
+list_play = ((11,9),(12,99),(13,999))
 
 class raund_1():
 
