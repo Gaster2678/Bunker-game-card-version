@@ -5,7 +5,7 @@ import sqlite3
 import random
 
 connect_bd = sqlite3.connect(r'./src/Database/Bunker_play.db')
-list_play = ((20,9),(21,99),(22,999))
+list_play = ((11,9),(12,99),(13,999))
 
 class raund_1():
 
@@ -98,13 +98,19 @@ class raund_2():
         for x in list:
             print(f"Ход игрока {x[1]} через 10 секунд")
             time.sleep(10)
-            await raund_2.vibor(check=0, user_id= x[0])
+            y = await random_updata.logik_2(user_id= x[0], ethalon= 2)
+            if y == 200:
+                pass
+            elif y == 404:
+                await raund_2.vibor(check=0, user_id= x[0])
+            else:
+                await raund_2.vibor(check=0, user_id= x[0])
             print(f"Ход игрока <@{x[1]}>")
             time.sleep(30)
             print(f"Ход игрока {x[1]} окончен")
 
         await Character_Card_table.table_player(list_of_players=list)
-        
+        print("2-ой раунд окончен ")
 
     async def secret_player_1(player):
         user_is = player[0]
@@ -114,7 +120,6 @@ class raund_2():
     async def vibor(check,user_id):
         
         mass_edit = ("Biology","Health","Hobby","Luggage","Evidense","Special_conditions")
-
         if check == 1:
             await updata.updata_sql(user_id= user_id, updata= mass_edit[0])
         elif check == 2:
@@ -131,7 +136,68 @@ class raund_2():
             await random_updata.logik(user_id=user_id)
 
 class raund_3():
-    pass
+    async def start(list_of_player):
+        sek = (5,4,3,2,1)
+
+        print("3-ой раунд начинается через минуту")
+
+        time.sleep(30)
+        
+        print("3-ой раунд начинается через 30 секунд")
+
+        await raund_3.secret_player_1(player=list_of_player[0])
+
+        time.sleep(25)
+
+        print("Начало через:")
+
+        for x in sek:
+            print(x)
+            time.sleep(1)
+
+        print("3 раунд начался")
+        await raund_3.player_hod(list=list_of_player)
+
+    async def player_hod(list):
+        for x in list:
+            print(f"Ход игрока {x[1]} через 10 секунд")
+            time.sleep(10)
+            y = await random_updata.logik_2(user_id= x[0], ethalon= 3)
+            if y == 200:
+                pass
+            elif y == 404:
+                await raund_3.vibor(check=0, user_id= x[0])
+            else:
+                await raund_3.vibor(check=0, user_id= x[0])
+            print(f"Ход игрока <@{x[1]}>")
+            time.sleep(30)
+            print(f"Ход игрока {x[1]} окончен")
+
+        await Character_Card_table.table_player(list_of_players=list)
+        print("3-ой раунд окончен ")
+
+    async def secret_player_1(player):
+        user_is = player[0]
+        discord_id = player[1]
+        print("Ваш ход через 40 секунд\nНадеюсь вы выбрали карту")
+
+    async def vibor(check,user_id):
+        
+        mass_edit = ("Biology","Health","Hobby","Luggage","Evidense","Special_conditions")
+        if check == 1:
+            await updata.updata_sql(user_id= user_id, updata= mass_edit[0])
+        elif check == 2:
+            await updata.updata_sql(user_id= user_id, updata= mass_edit[1])
+        elif check == 3:
+            await updata.updata_sql(user_id= user_id, updata= mass_edit[2])
+        elif check == 4:
+            await updata.updata_sql(user_id= user_id, updata= mass_edit[3])
+        elif check == 5:
+            await updata.updata_sql(user_id= user_id, updata= mass_edit[4])
+        elif check == 6:
+            await updata.updata_sql(user_id= user_id, updata= mass_edit[5])
+        else:
+            await random_updata.logik(user_id=user_id)
 
 class raund_4():
     pass
@@ -183,19 +249,41 @@ class random_updata():
         return data_card
     
     async def logik(user_id):
+        z = 0
+        ethalon = 2
         mass = await random_updata.check_sql(user_id=user_id)
         clock = 0
         for x in mass:
             for y in x:
                 if y == 0:
                     clock = clock + 1
+                elif y == 1:
+                    z = z + 1
                 else:
                     pass
         
-        return_random = random.randint(1,clock)
+        if z == ethalon:
+            return 200
+        else:            
+            return_random = random.randint(1,clock)
+            await raund_2.vibor(check=return_random, user_id=user_id)
 
-        await raund_2.vibor(check=return_random, user_id=user_id)
-
-
+    async def logik_2(user_id,ethalon):
+        z = 0
+        mass = await random_updata.check_sql(user_id=user_id)
+        clock = 0
+        for x in mass:
+            for y in x:
+                if y == 0:
+                    clock = clock + 1
+                elif y == 1:
+                    z = z + 1
+                else:
+                    pass
+        
+        if z == ethalon:
+            return 200
+        else:            
+            return 404
 
 asyncio.run(raund_1.start(list_player=list_play))
