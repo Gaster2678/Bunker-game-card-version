@@ -135,6 +135,10 @@ class raund_2():
         else:
             await random_updata.logik(user_id=user_id)
 
+    async def tap(user_id_discord, number_tap):
+        
+        pass
+
 class raund_3():
     async def start(list_of_player):
         sek = (5,4,3,2,1)
