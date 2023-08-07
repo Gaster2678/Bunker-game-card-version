@@ -5,7 +5,7 @@ import sqlite3
 import random
 
 connect_bd = sqlite3.connect(r'./src/Database/Bunker_play.db')
-id_room = 11
+id_room = 13
 class raund_1():
 
     check_player_clock = 0
@@ -156,6 +156,8 @@ class Character_Card_table():
 
     async def table_player(list_of_players):
         await Character_Card_table.heading()
+
+        #Отредактироввать с счетчиком
         for player in list_of_players:
             user_id = player[0]
             ping_nick = player[1]
@@ -231,7 +233,7 @@ class random_updata():
 
 def list_play(id_room):
         cur = connect_bd.cursor()
-        cur.execute(f"""SELECT play_id,user_id
+        cur.execute(f"""SELECT user_id,id_player
                     FROM Players
                     where play_id = {id_room}
                         """)
