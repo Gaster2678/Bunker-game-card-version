@@ -1,6 +1,6 @@
 import sqlite3
 import asyncio
-
+import time
 from Random_carts import *
 
 connect_bd = sqlite3.connect(r'./src/Database/Bunker_play.db')
@@ -14,7 +14,8 @@ class create_bd():
                                 user_id INT ,
                                 play_id INT,
                                 id_player INT,
-                                id_send INT
+                                id_send INT,
+                                vote INT
                                 );
                                 """)
         connect_bd.commit()
@@ -199,12 +200,14 @@ class Jobs_bd():
                                 user_id,
                                 play_id,
                                 id_player,
-                                id_send)
+                                id_send,
+                                vote)
                             VALUES(
                                 '{last_value_player}',
                                 '{last_value_room}',
                                 '{id_discord_user}',
-                                '{id_send}')
+                                '{id_send}',
+                                '0')
                                 """)
         connect_bd.commit()
 
@@ -305,12 +308,14 @@ class Jobs_bd():
                                 user_id,
                                 play_id,
                                 id_player,
-                                id_send)
+                                id_send,
+                                vote)
                             VALUES(
                                 '{last_value_player}',
                                 '{id_room}',
                                 '{id_discord_user}',
-                                '{id_send}')
+                                '{id_send}',
+                                '0')
                                 """)
         connect_bd.commit()
 
@@ -400,11 +405,18 @@ class dev_jobs_bd():
         connect_bd.commit()
         cur.close()
         
-#print(f"{asyncio.run(dev_jobs_bd.last_value_player())}")
-#print(f"{asyncio.run(dev_jobs_bd.last_value_room())}")
-#print(f"{asyncio.run(dev_jobs_bd.next_value_player())}")
-#print(f"{asyncio.run(dev_jobs_bd.next_value_room())}")
-#asyncio.run(Jobs_bd.add_play_and_room(id_send=3, id_discord_user=1000001))
-#asyncio.run(create_bd.create_all())
-#asyncio.run(test_bd.test_bd_Last_value(last_play_room_id= 10, last_user_id=10))
-#asyncio.run(Jobs_bd.add_play(id_send= 2,id_discord_user=1400212))
+async def reload_bd():
+    asyncio.run(create_bd.create_all())
+    asyncio.run(test_bd.test_bd_Last_value(last_play_room_id=10,last_user_id=10))
+
+    start_time = time.time()
+
+    z = range(1,100)
+    i = range(2,16)
+
+    for a in z:
+        asyncio.run(Jobs_bd.add_play_and_room(id_send= a, id_discord_user= 1))
+        for s in i:
+            asyncio.run(Jobs_bd.add_play(id_send=a, id_discord_user= s))
+
+    print("--- %s seconds ---" % (time.time() - start_time))
