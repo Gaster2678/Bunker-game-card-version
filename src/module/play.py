@@ -111,7 +111,7 @@ class raund_2():
         await Character_Card_table.table_player(list_of_players=list)
         print("2-ой раунд окончен ")
         print("Голосование начнется через минуту")
-        
+        dead.main(list_of_players=list)
 
     async def secret_player_1(player):
         user_is = player[0]
@@ -243,4 +243,89 @@ def list_play(id_room):
         cur.close()
         return list_of_players
 
-asyncio.run(raund_1.start(list_player=list_play(id_room=id_room)))
+class dead():
+
+    def main(list_of_players):
+        print("Да начнется голосоввание\n и вот таблица участников")
+        a = 1
+        for x in list_of_players:
+            print(f"{a}.<@{x[1]}>")
+            a = a + 1
+
+    async def check_sql(room_id):
+        cur = connect_bd.cursor()
+
+        cur.execute(f"""
+            SELECT  user_id
+            FROM Players
+            where id_send = {room_id}
+        """)
+
+        list_players = cur.fetchall()
+        connect_bd.commit()
+        cur.close()
+        return list_players
+
+    def vote(id_player,room_id,number):
+        
+        list_players = dead.check_sql(room_id=room_id)
+
+        if number == 1:
+            pass
+        elif number == 2:
+            pass 
+        elif number == 3:
+            pass 
+        elif number == 4:
+            pass 
+        elif number == 5:
+            pass 
+        elif number == 6:
+            pass 
+        elif number == 7:
+            pass 
+        elif number == 8:
+            pass 
+        elif number == 9:
+            pass 
+        elif number == 10:
+            pass 
+        elif number == 11:
+            pass 
+        elif number == 12:
+            pass 
+        elif number == 13:
+            pass 
+        elif number == 14:
+            pass 
+        elif number == 15:
+            pass 
+        elif number == 16:
+            pass
+
+    def current_value_vote(user_id):
+        cur = connect_bd.cursor()
+
+        cur.execute(f"""
+            SELECT vote
+            FROM Players
+            where user_id = {user_id}
+        """)
+
+        vote_player = cur.fetchall()
+        connect_bd.commit()
+        cur.close()
+        return vote_player
+    
+    def new_value_vote(user_id):
+        cur = connect_bd.cursor()
+        cur.execute(f"""UPDATE Player_Cards_check 
+                        SET vote = {(dead.current_value_vote(user_id=user_id)) + 1}
+                        where user_id = {user_id}
+                        """)
+        connect_bd.commit()
+        cur.close()
+
+#asyncio.run(raund_1.start(list_player=list_play(id_room=id_room)))
+#asyncio.run(raund_2.start(list_of_player=list_play(id_room=id_room)))
+asyncio.run(dead.main(list_of_players=list_play(id_room=id_room)))
