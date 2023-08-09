@@ -22,7 +22,8 @@ class dead():
         player_dead = await dead.logik_max_vote(list_players_vote=list_players_vote)
         nik = await SQL_processing.nik_player(player=player_dead)
         # test + vote
-        print(f"Игрок <@{nik}> был изнан из бункера со счетом: {player_dead[1]} ")
+        #vote_plus(user_id=70)
+        print(f"Игрок <@{nik[0][0]}> был изнан из бункера со счетом: {player_dead[1]} ")
         await SQL_processing.delete_player(player=player_dead)
         return 200
         
@@ -149,7 +150,7 @@ class SQL_processing():
         return list_players
     
     async def nik_player(player):
-        uid = player[1]
+        uid = player[0]
         cur = connect_bd.cursor()
 
         cur.execute(f"""
@@ -164,25 +165,25 @@ class SQL_processing():
         return ping        
         
     async def delete_player(player):
-        uid = player[1]
+        uid = player[0]
         
         cur = connect_bd.cursor()
 
         cur.execute(f"""
-            DELETE
+            DELETE 
             FROM Players
             where user_id = {uid}
         """)
         
         cur.execute(f"""
-            DELETE
+            DELETE 
             FROM Player_Cards
             where user_id = {uid}
         """)
         
         cur.execute(f"""
-            DELETE
-            FROM Player_Card_check
+            DELETE 
+            FROM Player_Cards_check
             where user_id = {uid}
         """)
 
