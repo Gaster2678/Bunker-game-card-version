@@ -1,8 +1,11 @@
 import asyncio
-from formation_of_player_data import data_generation, database_managment_table_player_out_checks
 import time
 import sqlite3
 import random
+
+from backend.formation_of_player_data import data_generation
+
+connect_bd = sqlite3.connect(r'./src/Database/Bunker_play.db')
 
 class Character_Card_table():
     

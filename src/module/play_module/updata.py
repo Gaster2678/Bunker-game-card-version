@@ -1,9 +1,11 @@
-import asyncio
-from formation_of_player_data import data_generation, database_managment_table_player_out_checks
-import time
 import sqlite3
 import random
-from play import raund_2
+import asyncio
+
+from backend.formation_of_player_data import *
+
+connect_bd = sqlite3.connect(r'./src/Database/Bunker_play.db')
+from play_module import raund_2
 connect_bd = sqlite3.connect(r'./src/Database/Bunker_play.db')
 
 class updata():

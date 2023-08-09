@@ -1,5 +1,14 @@
-from imports import *
+import asyncio
+import time
+import sqlite3
+import random
+
+from backend.formation_of_player_data import *
+from Character_Card_table import *
 from raund_2 import raund_2
+
+connect_bd = sqlite3.connect(r'./src/Database/Bunker_play.db')
+
 class raund_1():
 
     check_player_clock = 0
