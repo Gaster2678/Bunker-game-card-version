@@ -1,8 +1,7 @@
-from play_test import *
 import asyncio
 import time
 import sqlite3
-import random
+
 connect_bd = sqlite3.connect(r'./src/Database/Bunker_play.db')
 
 class dead():
@@ -16,14 +15,15 @@ class dead():
 
         print("Время на голосование 2 минуты")
         #Отправка сообшения на голосование
-        time.sleep(90)
+        time.sleep(1) # 90 secund
         print("Осталось 30 секунд")
         room_id = await SQL_processing.check_room(user_id=list_of_players[0][0])
         list_players_vote = await SQL_processing.check_vote(room_id=room_id)
         player_dead = await dead.logik_max_vote(list_players_vote=list_players_vote)
         nik = await SQL_processing.nik_player(player=player_dead)
+        # test + vote
         print(f"Игрок <@{nik}> был изнан из бункера со счетом: {player_dead[1]} ")
-        SQL_processing.delete_player(player=player_dead)
+        await SQL_processing.delete_player(player=player_dead)
         return 200
         
     async def logik_max_vote(list_players_vote):
@@ -38,17 +38,16 @@ class dead():
                 temp1 = vote
                 temp2 = uid
             else:
-                print("Модуль play\nКласс dead\nфункция logik_max_voten\nстрока 274\n Были одинаковые голоса")
                 continue
         list_dead = (temp2,temp1)
         return list_dead
 
     async def vote(id_player,room_id,number):
         
-        list_players = dead.check_sql(room_id=room_id)
+        list_players = SQL_processing.check_sql(room_id=room_id)
 
         if number == 1:
-            await dead.new_value_vote(user_id=list_players)
+            await SQL_processing.new_value_vote(user_id=list_players)
             return 200
         elif number == 2:
             pass 
@@ -99,7 +98,7 @@ class SQL_processing():
     
     async def new_value_vote(user_id):
         cur = connect_bd.cursor()
-        cur.execute(f"""UPDATE Player_Cards_check 
+        cur.execute(f"""UPDATE Players 
                         SET vote = {(SQL_processing.current_value_vote(user_id=user_id)) + 1}
                         where user_id = {user_id}
                         """)
@@ -112,7 +111,7 @@ class SQL_processing():
         cur.execute(f"""
             SELECT  user_id,vote
             FROM Players
-            where id_send = {room_id}
+            where id_send = {room_id[0][0]}
         """)
 
         list_players_vote = cur.fetchall()
@@ -189,3 +188,14 @@ class SQL_processing():
 
         connect_bd.commit()
         cur.close()        
+        
+def vote_plus(user_id):
+
+    cur = connect_bd.cursor()
+    cur.execute(f"""UPDATE Players
+                    SET vote = {10}
+                    where user_id = {user_id}
+                    """)
+    connect_bd.commit()
+    cur.close()
+        
