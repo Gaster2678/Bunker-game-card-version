@@ -1,5 +1,12 @@
-from imports import *
+import asyncio
+import time
+import sqlite3
+import random
+from formation_of_player_data import data_generation, database_managment_table_player_out_checks
+from Character_Card_table import Character_Card_table
+from updata import updata, random_updata
 from retirement_module import dead
+from raund_3 import raund_3
 class raund_2():
     async def start(list_of_player):
         sek = (5,4,3,2,1)
@@ -41,8 +48,9 @@ class raund_2():
         await Character_Card_table.table_player(list_of_players=list)
         print("2-ой раунд окончен ")
         print("Голосование начнется через минуту")
-        await dead.main(list_of_players=list)
-
+        check = await dead.main(list_of_players=list)
+        if check == 200:
+            await raund_3.start()
     async def secret_player_1(player):
         user_is = player[0]
         discord_id = player[1]
@@ -69,3 +77,5 @@ class raund_2():
     async def tap(user_id_discord, number_tap):
         pass
 
+    async def new_list():
+        pass
