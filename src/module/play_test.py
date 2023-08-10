@@ -19,6 +19,8 @@ def list_play(id_room):
         cur.close()
         return list_of_players
 
+
+    
 #asyncio.run(raund_1.start(list_player=list_play(id_room=id_room)))
 asyncio.run(raund_2.start(list_of_player=list_play(id_room=id_room)))
 #asyncio.run(dead.main(list_of_players=list_play(id_room=id_room)))

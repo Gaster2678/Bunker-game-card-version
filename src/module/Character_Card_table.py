@@ -2,9 +2,10 @@ import asyncio
 import time
 import sqlite3
 import random
-import os,sys
-sys.path.append('..')
-from utils.formation_of_player_data import *
+import os
+
+from utils.formation_of_player_data import data_generation
+
 connect_bd = sqlite3.connect(r'./src/Database/Bunker_play.db')
 
 class Character_Card_table():

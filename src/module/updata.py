@@ -1,11 +1,9 @@
-import sqlite3
-import random
 import asyncio
+import random
+import sqlite3
+import raund_2
+from utils.formation_of_player_data import *
 
-from backend.formation_of_player_data import *
-
-connect_bd = sqlite3.connect(r'./src/Database/Bunker_play.db')
-from play_module import raund_2
 connect_bd = sqlite3.connect(r'./src/Database/Bunker_play.db')
 
 class updata():
@@ -55,7 +53,7 @@ class random_updata():
             return 200
         else:            
             return_random = random.randint(1,clock)
-            await raund_2.vibor(check=return_random, user_id=user_id)
+            await raund_2.raund_2.vibor(check=return_random, user_id=user_id)
 
     async def logik_2(user_id,ethalon):
         z = 0

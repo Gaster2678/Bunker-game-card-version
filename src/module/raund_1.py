@@ -3,7 +3,7 @@ import time
 import sqlite3
 import random
 
-from backend.formation_of_player_data import *
+from utils.formation_of_player_data import *
 from Character_Card_table import *
 from raund_2 import raund_2
 
