@@ -11,11 +11,11 @@ class raund_3():
     async def start(list_of_player):
         sek = (5,4,3,2,1)
 
-        print("2-ой раунд начинается через минуту")
+        print("3-ой раунд начинается через минуту")
 
         time.sleep(30)
         
-        print("2-ой раунд начинается через 30 секунд")
+        print("3-ой раунд начинается через 30 секунд")
 
         await raund_3.secret_player_1(player=list_of_player[0])
 

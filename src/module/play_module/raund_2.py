@@ -1,11 +1,13 @@
 import time
 import asyncio
+import sqlite3
 
-from backend.formation_of_player_data import *
 from Character_Card_table import Character_Card_table
 from updata import updata, random_updata
 from retirement_module import dead
 from raund_3 import raund_3
+
+connect_bd = sqlite3.connect(r'./src/Database/Bunker_play.db')
 
 class raund_2():
     async def start(list_of_player):
@@ -50,7 +52,9 @@ class raund_2():
         print("Голосование начнется через минуту")
         check = await dead.main(list_of_players=list)
         if check == 200:
-            await raund_3.start()
+            new_list = await raund_2.new_list(list=list)            
+            await raund_3.start(list_of_player=new_list)
+            
     async def secret_player_1(player):
         user_is = player[0]
         discord_id = player[1]
@@ -77,5 +81,24 @@ class raund_2():
     async def tap(user_id_discord, number_tap):
         pass
 
-    async def new_list():
-        pass
+    async def new_list(list):
+        cur = connect_bd.cursor()
+        cur.execute(f"""SELECT play_id
+                    FROM Players
+                    where user_id  = {list[0][0]}
+                        """)
+        
+        id_room= cur.fetchall()
+        connect_bd.commit()
+        
+        cur.execute(f"""SELECT user_id,id_player
+                    FROM Players
+                    where play_id = {id_room}
+                        """)
+        
+        list_of_players = cur.fetchall()
+        connect_bd.commit()
+        
+        
+        cur.close()
+        return list_of_players

@@ -2,13 +2,15 @@ import asyncio
 import time
 import sqlite3
 import random
-
-from backend.formation_of_player_data import data_generation
-
+import os,sys
+sys.path.append('..')
+from utils.formation_of_player_data import *
 connect_bd = sqlite3.connect(r'./src/Database/Bunker_play.db')
 
 class Character_Card_table():
+    """
     
+    """   
     async def heading():
         print("Nikname|Profession|Biology|Health|Hobby|Luggage|Evidense|Special_conditions")
         print("---------------------------------------------------------------------------")
@@ -22,3 +24,4 @@ class Character_Card_table():
             ping_nick = player[1]
             
             await data_generation.start(user_id=user_id,nick= ping_nick)
+            

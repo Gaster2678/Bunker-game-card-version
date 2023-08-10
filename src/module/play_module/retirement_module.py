@@ -6,7 +6,7 @@ connect_bd = sqlite3.connect(r'./src/Database/Bunker_play.db')
 
 class dead():
 
-    async def main(list_of_players):
+    async def main(list_of_players):    
         print("Да начнется голосоввание\n и вот таблица участников")
         a = 1
         for x in list_of_players:
@@ -22,8 +22,8 @@ class dead():
         player_dead = await dead.logik_max_vote(list_players_vote=list_players_vote)
         nik = await SQL_processing.nik_player(player=player_dead)
         # test + vote
-        #vote_plus(user_id=70)
-        print(f"Игрок <@{nik[0][0]}> был изнан из бункера со счетом: {player_dead[1]} ")
+        vote_plus(user_id=91)
+        print(f"Игрок <@{nik}> был изнан из бункера со счетом: {player_dead[1]} ")
         await SQL_processing.delete_player(player=player_dead)
         return 200
         
@@ -162,7 +162,7 @@ class SQL_processing():
         ping = cur.fetchall()
         connect_bd.commit()
         cur.close()
-        return ping        
+        return ping[0][0]        
         
     async def delete_player(player):
         uid = player[0]
