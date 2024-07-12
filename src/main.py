@@ -1,4 +1,4 @@
-from module.menu import one_menu
+from Frontend.menu import one_menu
 import asyncio
 
 async def main():

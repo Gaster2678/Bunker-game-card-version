@@ -1,6 +1,6 @@
 import random
 
-from bunker_card import *
+from Database.bunker_card import *
 
 class bunker_karti():
 
